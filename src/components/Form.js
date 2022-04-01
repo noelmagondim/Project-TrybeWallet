@@ -10,11 +10,46 @@ class Form extends Component {
   }
 
   render() {
+    const { currencies } = this.props;
     return (
-      <div>Até aqui completei o desafio 04</div>
+      <form>
+        <label htmlFor="valor">
+          Valor:
+          <input
+            data-testid="value-input"
+            type="number"
+            name="valor"
+          />
+        </label>
+        <label htmlFor="descricao">
+          Descrição:
+          <input
+            data-testid="description-input"
+            type="text"
+            name="descricao"
+          />
+        </label>
+        <label
+          htmlFor="currency"
+        >
+          Moeda:
+          <select
+            label="Moeda"
+            name="currency"
+            data-testid="currency-input"
+          >
+            { currencies.map((element, index) => (
+              <option key={ index } value={ element }>{element}</option>)) }
+          </select>
+        </label>
+      </form>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   getCurrencyList: () => dispatch(fetchAPI()),
@@ -22,6 +57,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Form.propTypes = {
   getCurrencyList: PropTypes.func.isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);
