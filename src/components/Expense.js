@@ -4,7 +4,7 @@ class Expense extends Component {
   render() {
     return (
       <div>
-        <h4>Lista de gastos:</h4>
+        <p data-testid="total-field">0</p>
       </div>
     );
   }
