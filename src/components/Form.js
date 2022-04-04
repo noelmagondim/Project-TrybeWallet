@@ -19,6 +19,7 @@ class Form extends Component {
             data-testid="value-input"
             type="number"
             name="valor"
+            id="valor"
           />
         </label>
         <label htmlFor="descricao">
@@ -27,6 +28,7 @@ class Form extends Component {
             data-testid="description-input"
             type="text"
             name="descricao"
+            id="descricao"
           />
         </label>
         <label
@@ -36,10 +38,37 @@ class Form extends Component {
           <select
             label="Moeda"
             name="currency"
+            id="currency"
             data-testid="currency-input"
           >
-            { currencies.map((element, index) => (
-              <option key={ index } value={ element }>{element}</option>)) }
+            { currencies && currencies.map((element, index) => (
+              <option key={ index } value={ element }>{element}</option>))}
+          </select>
+        </label>
+        <label htmlFor="method">
+          Método de pagamento:
+          <select
+            data-testid="method-input"
+            id="method"
+            name="method"
+          >
+            <option value="1">Dinheiro</option>
+            <option value="2">Cartão de crédito</option>
+            <option value="3">Cartão de débito</option>
+          </select>
+        </label>
+        <label htmlFor="tag">
+          Tag:
+          <select
+            data-testid="tag-input"
+            id="tag"
+            name="tag"
+          >
+            <option value="1">Alimentação</option>
+            <option value="2">Lazer</option>
+            <option value="3">Trabalho</option>
+            <option value="4">Transporte</option>
+            <option value="5">Saúde</option>
           </select>
         </label>
       </form>
