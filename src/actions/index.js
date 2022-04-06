@@ -6,9 +6,8 @@ export const setUserData = (email, senha) => ({
   senha,
 });
 
-export const setWalletData = (wallet) => ({
+export const setWalletData = () => ({
   type: 'SET_WALLET_DATA',
-  wallet,
 });
 
 // Abaixo são as modificações necessárias para o desafio 04
@@ -18,13 +17,46 @@ export const getCurrencies = (currencies) => ({
   currencies,
 });
 
+// Action da falha
+
+export const apiFail = (error) => ({
+  type: 'API_FAIL',
+  error,
+});
+
 // Agora vou utilizar o thunk para despachar ações assíncronas - Ainda referente ao desafio 04
 
 export function fetchAPI() {
   return async (dispatch) => {
-    const result = await getCurrency();
-    delete result.USDT;
-    const values = Object.keys(result);
-    return dispatch(getCurrencies(values));
+    dispatch(setWalletData());
+    try {
+      const result = await getCurrency();
+      delete result.USDT;
+      const aux = Object.keys(result);
+      dispatch(getCurrencies(aux));
+    } catch (error) {
+      dispatch(apiFail(error));
+    }
+  };
+}
+
+// Os códigos abaixo são referentes ao Desafio 06, fiz separado para não confundir
+
+// Actios dos custos
+
+export const getExpenses = (value, exchangeRates) => ({
+  type: 'SAVE_EXPENSES',
+  expenses: { ...value, exchangeRates },
+});
+
+// Vou fazer um thunk conforme recomendado pelo README
+
+export function expenseThunk(exchangeRates) {
+  return async (dispatch) => {
+    dispatch(setWalletData());
+    return fetch('https://economia.awesomeapi.com.br/json/all')
+      .then((response) => response.json())
+      .then((data) => dispatch(getExpenses(exchangeRates, data)))
+      .catch((error) => dispatch(apiFail(error)));
   };
 }

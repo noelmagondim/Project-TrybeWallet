@@ -1,24 +1,31 @@
-// Esse reducer será responsável por tratar o todas as informações relacionadas as despesas
 const INITIAL_STATE = {
-  wallet: {
-    currencies: [],
-    expenses: [],
-  },
+  currencies: [],
+  expenses: [],
 };
 
 const walletDataReducer = (state = INITIAL_STATE, action) => {
-  const { wallet, currencies } = action;
-  switch (action.type) {
+  const { currencies, expenses, type, error } = action;
+  switch (type) {
   case 'SET_WALLET_DATA':
     return {
       ...state,
-      wallet,
     };
   case 'GET_CURRENCIES':
     return {
       ...state,
-      currencies,
+      currencies: [...state.currencies, ...currencies],
     };
+  case 'API_FAIL':
+    return {
+      ...state,
+      error,
+    };
+  case 'SAVE_EXPENSES': {
+    return {
+      ...state,
+      expenses: [...state.expenses, expenses],
+    };
+  }
   default:
     return state;
   }
