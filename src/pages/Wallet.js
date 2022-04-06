@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchAPI, expenseThunk } from '../actions/index';
 import Table from '../components/Table';
+import Header from '../components/Header';
 
 const alimentacao = 'Alimentação';
 
@@ -53,19 +54,6 @@ class Wallet extends Component {
     });
   }
 
-  allExpenses = () => {
-    const { expense } = this.props;
-    if (!expense) {
-      return 0;
-    }
-    return expense
-      .reduce((acc, element) => {
-        acc += Number(element.value)
-          * Number(element.exchangeRates[element.currency].ask);
-        return acc;
-      }, 0).toFixed(2);
-  };
-
   render() {
     const {
       value,
@@ -74,21 +62,10 @@ class Wallet extends Component {
       method,
       tag,
     } = this.state;
-    const { currencies, email, expense } = this.props;
-    const subTotal = this.allExpenses(expense);
+    const { currencies } = this.props;
     return (
       <div>
-        <header>
-          <h1>TrybeWallet</h1>
-          <h4 data-testid="email-field">
-            Email:
-            { email }
-          </h4>
-          <p data-testid="total-field">
-            { subTotal }
-          </p>
-          <p data-testid="header-currency-field">BRL</p>
-        </header>
+        <Header />
         <form>
           <label htmlFor="value">
             Valor:
@@ -186,7 +163,6 @@ Wallet.propTypes = {
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   saveExpense: PropTypes.func.isRequired,
   expense: PropTypes.arrayOf(PropTypes.any).isRequired,
-  email: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
